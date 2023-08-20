@@ -12,7 +12,7 @@ This above files are source so you should place this file in the same directory 
 HOW TO COMPILE 
 There is no special linker or anything to compile this , normally use SDL2 and SDL_ttf compile commands 
 
-command is : gcc tect.c -o test -lSDL2 -lSDL_ttf
+command is : gcc tect.c -o test -lSDL2 -lSDL2_ttf
 
 *********WARNING**************
  Always include SDL_Graph.h after including SDL.h and SDL_ttf.h
