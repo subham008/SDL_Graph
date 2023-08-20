@@ -39,13 +39,15 @@ int main(int argc, char* argv[]) {
     }
 
    int d[][2]={ {0,4}, {1,10} ,{2,4},{3,7} ,{4,6},{5,8},{6,12},{7,9} ,{8 ,5},{9,8} };
-
+  SDL_Color pink={255,25,200,25};
+  SDL_Color red={200,35,25,200};
+    
    SDL_setGraphFontStyle("SpaceMono-Regular.ttf");
    SDL_Graph bar;
    bar.data=d;
    bar.size=10;
-   bar.background_color={255,25,200,25};
-   bar.Bar_color={200,35,25,200};
+   bar.background_color=pink;
+   bar.Bar_color=red;
    bar.x_title="days";
    bar.y_title="rainfall";
    bar.w=300;
@@ -58,8 +60,8 @@ int main(int argc, char* argv[]) {
    SDL_Graph line;
    line.data=d;
    line.size=10;
-   line.background_color={255,255,255,255};
-   line.Bar_color={200,35,25,200};
+   line.background_color=pink;
+   line.Bar_color=red;
    line.x_title="days";
    line.y_title="rainfall";
    line.w=400;
