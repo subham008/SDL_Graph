@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 
    int d[][2]={ {0,4}, {1,10} ,{2,4},{3,7} ,{4,6},{5,8},{6,12},{7,9} ,{8 ,5},{9,8} };
 
-   SDL_setGraphFontStyle("Space_Mono/SpaceMono-Regular.ttf");
+   SDL_setGraphFontStyle("SpaceMono-Regular.ttf");
    SDL_Graph bar;
    bar.data=d;
    bar.size=10;
