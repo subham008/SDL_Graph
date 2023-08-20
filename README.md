@@ -1,4 +1,4 @@
-# SDL_Graph
+# SDL_Graph 1.0.0
 SDL_Graph is a extension to SDL library , it is able to render bar and line graphs ,its easy to use , no need to think about architecture , as it is not compiled you just have to  add this files to your desired directory and include this files from there 
 
 HOW TO INSTALL
@@ -17,4 +17,4 @@ command is : gcc tect.c -o test -lSDL2 -lSDL_ttf
 *********WARNING**************
  Always include SDL_Graph.h after including SDL.h and SDL_ttf.h
  
-
+For detailed information have a look at test.c file 
