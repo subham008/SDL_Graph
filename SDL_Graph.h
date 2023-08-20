@@ -112,10 +112,7 @@ int SDL_setGraphFontStyle(const char* c){
   #error "SDL_BarGraph.c file not found"
 #endif
 
-#include"SDL_Pichart.c"
-#ifndef SDL_PICHART_GRAPH_C_
-  #error "SDL_Pichart.c file not found"
-#endif
+
 
 
 int SDL_RenderGraph(SDL_Renderer* ren ,SDL_Graph* bar,SDL_Rect* r){
