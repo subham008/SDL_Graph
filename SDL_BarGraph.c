@@ -87,14 +87,14 @@ for(int i=0;i<bar->size; i++){
 
 
 #ifdef SDL_TTF_H_
-
+SDL_Color black={0,0,0,255};
  // code for renderig font
  if(graph_font!=NULL){
    SDL_Surface* sur;
    SDL_Texture* tex;
   
   //creating and rendering x title 
-   sur=TTF_RenderUTF8_Blended(graph_font ,bar->x_title,{0,0,0,255});
+   sur=TTF_RenderUTF8_Blended(graph_font ,bar->x_title,black);
    if(sur==NULL){
     SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD SURFACE FROM FONT : %s",SDL_GetError());
     return -1;
@@ -116,7 +116,7 @@ for(int i=0;i<bar->size; i++){
    SDL_DestroyTexture(tex);
    
    //creating and rendering x title 
-   sur=TTF_RenderUTF8_Blended(graph_font ,bar->y_title,{0,0,0,255});
+   sur=TTF_RenderUTF8_Blended(graph_font ,bar->y_title,black);
    if(sur==NULL){
     SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD SURFACE FROM FONT : %s",SDL_GetError());
     return -1;
