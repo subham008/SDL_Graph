@@ -39,38 +39,35 @@ int main(int argc, char* argv[]) {
     }
 
    int d[][2]={ {0,4}, {1,10} ,{2,4},{3,7} ,{4,6},{5,8},{6,12},{7,9} ,{8 ,5},{9,8} };
+   int r[][2]={ {0,5}, {1,8} ,{2,3},{3,9} ,{4,3},{5,9},{6,13},{7,2} ,{8 ,11},{9,17} };
+
   SDL_Color pink={255,25,200,25};
+  SDL_Color white={255,255,255};
   SDL_Color red={200,35,25,200};
-    
-   SDL_setGraphFontStyle("SpaceMono-Regular.ttf");
+  
+   SDL_setGraphFontStyle("Space_Mono/SpaceMono-Regular.ttf");
+
+  SDL_Color arr[]={pink,red,pink,red,pink,red,pink,red,pink,red};
+
+   SDL_Dataset dataset[2];
+   SDL_CreateDataset(&dataset[0] ,d, 10 , red, NULL);
+   SDL_CreateDataset(&dataset[1] ,r, 10 , pink, NULL);
+
    SDL_Graph bar;
-   bar.data=d;
-   bar.size=10;
-   bar.background_color=pink;
-   bar.Bar_color=red;
+   SDL_CreateGraph(&bar , dataset , 2, 300, 200);
    bar.x_title="days";
    bar.y_title="rainfall";
-   bar.w=300;
-   bar.h=200;
-  
    SDL_CreateBarGraph(renderer , &bar);
-  
    SDL_Rect grect={50,10,bar.w,bar.h};
 
    SDL_Graph line;
-   line.data=d;
-   line.size=10;
-   line.background_color=pink;
-   line.Bar_color=red;
+   SDL_CreateGraph(&line , dataset , 2, 300, 200);
    line.x_title="days";
    line.y_title="rainfall";
-   line.w=400;
-   line.h=200;
-  
    SDL_CreateLineGraph(renderer , &line);
-  
    SDL_Rect lrect={60,300,line.w,line.h};
-
+  
+  
     // Main loop
     int quit = 0;
     SDL_Event event;
@@ -79,11 +76,9 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT) {
                 quit = 1;
             }
-            else if(event.window.event==SDL_WINDOWEVENT_RESIZED){
-                 SDL_DestroyGraph(&bar);
-                 SDL_DestroyGraph(&line);
-                 SDL_CreateBarGraph(renderer,&bar);
-                 SDL_CreateLineGraph(renderer,&line);
+            else if(event.window.event==SDL_WINDOWEVENT_RESIZED){           
+                 SDL_UpdateBarGraph(renderer,&bar);
+                 SDL_UpdateLineGraph(renderer,&line);
             }
 
         }
@@ -105,8 +100,8 @@ int main(int argc, char* argv[]) {
 
     // Clean up and quit
     SDL_DestroyGraph(&bar);
-     SDL_DestroyGraph(&line);
-    SDL_GraphQuit();
+    SDL_DestroyGraph(&line);
+    SDL_CloseGraph();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
