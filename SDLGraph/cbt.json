@@ -1,0 +1,25 @@
+{
+    "additionalArguments": "",
+    "compilerArgs":"",
+    "compilationType": "dynamic",
+    "compiledBinaryName": "SDLGraph",
+    "compilerOptions": {
+        "debugSymbols": true,
+        "optimizationLevel": 2,
+        "toolchain": "msvc",
+        "toolchainPath": "C:/\"Program Files\"/\"Microsoft Visual Studio\"/2022/Community"
+    },
+    "dependencies": [
+        {  
+             "name":"SDL2",
+             "dependencyPath":"C:/Users/HP/scoop/apps/vcpkg/current/packages/sdl2_x64-windows"
+        },
+        {  
+            "name":"SDL2_ttf",
+            "dependencyPath":"C:/Users/HP/scoop/apps/vcpkg/current/packages/sdl2-ttf_x64-windows"
+        }
+    ],
+    "name": "SDLGraph",
+    "projectType": "lib",
+    "version": "1.0.0"
+}
