@@ -3,7 +3,7 @@
 #endif
 
 
-#include "SDL_Graph.h"
+#include "SDL_Graph.cpp"
 /**
  * creates a line graph into a SDL_Texture
  * 

@@ -4,7 +4,7 @@
 #endif
 
 
-#include "SDL_Graph.h"
+#include "SDL_Graph.cpp"
 
 /**
  * creates a bar graph into a SDL_Texture
