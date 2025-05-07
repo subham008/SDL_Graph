@@ -1,6 +1,6 @@
 
-#ifndef SDL_BAR_GRAPH_C_
-   #define SDL_BAR_GRAPH_C_
+#ifndef SDL_BAR_GRAPH_CPP
+   #define SDL_BAR_GRAPH_CPP
 #endif
 
 
