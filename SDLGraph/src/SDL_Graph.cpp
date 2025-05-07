@@ -6,7 +6,7 @@
 
 // Source defination for Dataset class
 
-SDL_Graph::Dataset::Dataset(std::vector<std::pair<int,int>> data):data(data){}
+SDL_Graph::Dataset::Dataset(std::vector<std::pair<int,int>> data , SDL_Color color):data(data),color(color){}
 
 void SDL_Graph::Dataset::setData(std::vector<std::pair<int,int>> data) {
     this->data=data;
@@ -14,6 +14,14 @@ void SDL_Graph::Dataset::setData(std::vector<std::pair<int,int>> data) {
 
 std::vector<std::pair<int,int>> SDL_Graph::Dataset::getData()  {
     return this->data;
+ }
+
+ void SDL_Graph::Dataset::setColor(SDL_Color color){
+    this->color=color;
+ }
+
+ SDL_Color SDL_Graph::Dataset::getColor(){
+     return this->color;
  }
 
 

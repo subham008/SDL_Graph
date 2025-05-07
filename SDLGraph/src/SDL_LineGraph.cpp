@@ -4,22 +4,11 @@
 
 
 #include "SDL_Graph.cpp"
-/**
- * creates a line graph into a SDL_Texture
- * 
- * This function takes input a SDL_Renderer* and SDL_Graph* as 
- * as arguments , then this will create the whole texture into
- * and stores its address into SDL_Graph->t variable 
- * The created texture is SDL_TEXTUREACCESS_STATIC 
- * 
- * when done with SDL_Graph* , use SDL_DestroyGraph() to dispose it
- * 
- * \param ren pointer to the SDL_Renderer* 
- * \param bar pointer to SDL_Graph , filled with Line graph in the form of SDL_Texture
- * \returns returns 0 if succesfull , or -1 on error
- * 
- * \since This function is available since SDL_Graph 1.0.0
-*/
+
+
+
+
+
 
 int SDL_CreateLineGraph(SDL_Renderer* ren , SDL_Graph* bar){
      if(bar==NULL){

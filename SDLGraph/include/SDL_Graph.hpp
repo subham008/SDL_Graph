@@ -21,17 +21,21 @@ namespace SDL_Graph{
     class Dataset{
        
       private:
+        SDL_Color color ;
         std::vector<std::pair<int,int>> data;// array pointer of 2 dimensional data 
       public:
-        
+         
         //defining the constructor
-        Dataset(std::vector<std::pair<int,int>> data);
+        Dataset(std::vector<std::pair<int,int>> data , SDL_Color color);
 
        //define setter and getter methods for the private members
         void setData(std::vector<std::pair<int,int>> data);
 
         std::vector<std::pair<int,int>> getData();
 
+        void setColor(SDL_Color color);
+        SDL_Color getColor();
+        
         int getMaxX() ;
         int getMinX() ;
         int getMaxY() ;
@@ -86,9 +90,37 @@ namespace SDL_Graph{
       
         int SDL_GetGraphMinY() ;
     };  //end of Graph class
+    
+
+
+    class LineGraph : public Graph {
+      
+      public:
+        // Constructor for LineGraph
+        LineGraph(std::vector<Dataset> data, int w, int h)
+            : Graph(data, w, h) {}
+    
+        // Additional methods specific to LineGraph can be added here
+        void drawLineGraph(SDL_Renderer* renderer);
+    };
+
+
+
+    
+    class BarGraph : public Graph {
+      public:
+        // Constructor for BarGraph
+        BarGraph(std::vector<Dataset> data, int w, int h)
+            : Graph(data, w, h) {}
+    
+        // Additional methods specific to BarGraph can be added here
+        void drawBarGraph(SDL_Renderer* renderer);
+    };
+
 
   
 }
+
 
 
 
