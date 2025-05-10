@@ -6,26 +6,48 @@
 
 // Source defination for Dataset class
 
-SDL_Graph::Dataset::Dataset(std::vector<std::pair<int,int>> data , SDL_Color color):data(data),color(color){}
+namespace SDL_Graph{
 
-void SDL_Graph::Dataset::setData(std::vector<std::pair<int,int>> data) {
+Dataset::Dataset(std::vector<std::pair<int,int>> data , SDL_Color color):data(data),color(color){}
+
+void  Dataset::setData(std::vector<std::pair<int,int>> data) {
     this->data=data;
 }
 
-std::vector<std::pair<int,int>> SDL_Graph::Dataset::getData()  {
+std::vector<std::pair<int,int>> Dataset::getData()  {
     return this->data;
  }
 
- void SDL_Graph::Dataset::setColor(SDL_Color color){
+ void Dataset::setColor(SDL_Color color){
     this->color=color;
  }
 
- SDL_Color SDL_Graph::Dataset::getColor(){
+ // Setter for width
+void Graph::setWidth(int w) {
+    this->width = w;
+}
+
+// Getter for width
+int Graph::getWidth() {
+    return this->width;
+}
+
+// Setter for height
+void Graph::setHeight(int h) {
+    this->height = h;
+}
+
+// Getter for height
+int Graph::getHeight() {
+    return this->height;
+}
+
+ SDL_Color Dataset::getColor(){
      return this->color;
  }
 
 
- int SDL_Graph::Dataset::getMaxX() {
+ int Dataset::getMaxX() {
     if (data.empty()) {
         throw std::runtime_error("Dataset is empty. Cannot determine maximum X value.");
     }
@@ -39,7 +61,7 @@ std::vector<std::pair<int,int>> SDL_Graph::Dataset::getData()  {
     return max;
 }
 
-int SDL_Graph::Dataset::getMinX() {
+int Dataset::getMinX() {
     if (data.empty()) {
         throw std::runtime_error("Dataset is empty. Cannot determine minimum X value.");
     }
@@ -54,7 +76,7 @@ int SDL_Graph::Dataset::getMinX() {
 }
 
 
-int SDL_Graph::Dataset::getMaxY() {
+int Dataset::getMaxY() {
     if (data.empty()) {
         throw std::runtime_error("Dataset is empty. Cannot determine maximum Y value.");
     }
@@ -69,7 +91,7 @@ int SDL_Graph::Dataset::getMaxY() {
 }
 
 
-int SDL_Graph::Dataset::getMinY() {
+int Dataset::getMinY() {
     if (data.empty()) {
         throw std::runtime_error("Dataset is empty. Cannot determine minimum Y value.");
     }
@@ -90,55 +112,58 @@ int SDL_Graph::Dataset::getMinY() {
 
 
 // Constructor for Graph class
-SDL_Graph::Graph::Graph(std::vector<Dataset> data, int w, int h) 
+Graph::Graph(std::vector<Dataset> data, int w, int h) 
     : dataset_array(data), graph_texture(nullptr), Text_color({0, 0, 0, 255}), background_color({255, 255, 255, 255}), flags(0) {
     this->width = w;
     this->height= h;
 }
 
 // Setter for graph texture
-void SDL_Graph::Graph::setGraphTexture(SDL_Texture* texture) {
+void Graph::setGraphTexture(SDL_Texture* texture) {
+    if(this->graph_texture != nullptr) {
+        SDL_DestroyTexture(this->graph_texture);
+    }
     this->graph_texture = texture;
 }
 
 // Getter for graph texture
-SDL_Texture* SDL_Graph::Graph::getGraphTexture() {
+SDL_Texture* Graph::getGraphTexture() {
     return this->graph_texture;
 }
 
 // Setter for text color
-void SDL_Graph::Graph::setTextColor(SDL_Color color) {
+void Graph::setTextColor(SDL_Color color) {
     this->Text_color = color;
 }
 
 // Getter for text color
-SDL_Color SDL_Graph::Graph::getTextColor() {
+SDL_Color Graph::getTextColor() {
     return this->Text_color;
 }
 
 // Setter for background color
-void SDL_Graph::Graph::setBackgroundColor(SDL_Color color) {
+void  Graph::setBackgroundColor(SDL_Color color) {
     this->background_color = color;
 }
 
 // Getter for background color
-SDL_Color SDL_Graph::Graph::getBackgroundColor() {
+SDL_Color Graph::getBackgroundColor() {
     return this->background_color;
 }
 
 // Setter for flags
-void SDL_Graph::Graph::setFlags(uint8_t flags) {
+void Graph::setFlags(uint8_t flags) {
     this->flags = flags;
 }
 
 // Getter for flags
-uint8_t SDL_Graph::Graph::getFlags() {
+uint8_t Graph::getFlags() {
     return this->flags;
 }
 
 
 // Get the maximum X value from the dataset array
-int SDL_Graph::Graph::SDL_GetGraphMaxX() {
+int Graph::SDL_GetGraphMaxX() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine maximum X value.");
     }
@@ -154,7 +179,7 @@ int SDL_Graph::Graph::SDL_GetGraphMaxX() {
 }
 
 // Get the minimum X value from the dataset array
-int SDL_Graph::Graph::SDL_GetGraphMinX() {
+int Graph::SDL_GetGraphMinX() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine minimum X value.");
     }
@@ -170,7 +195,7 @@ int SDL_Graph::Graph::SDL_GetGraphMinX() {
 }
 
 // Get the maximum Y value from the dataset array
-int SDL_Graph::Graph::SDL_GetGraphMaxY() {
+int Graph::SDL_GetGraphMaxY() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine maximum Y value.");
     }
@@ -186,7 +211,7 @@ int SDL_Graph::Graph::SDL_GetGraphMaxY() {
 }
 
 // Get the minimum Y value from the dataset array
-int SDL_Graph::Graph::SDL_GetGraphMinY() {
+int Graph::SDL_GetGraphMinY() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine minimum Y value.");
     }
@@ -199,6 +224,9 @@ int SDL_Graph::Graph::SDL_GetGraphMinY() {
         }
     }
     return min;
+}
+
+
 }
 
 

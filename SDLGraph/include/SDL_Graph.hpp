@@ -11,6 +11,7 @@
 
 
 #include<SDL2/SDL.h>
+#include<SDL2/SDL_ttf.h>
 #include <iostream>
 #include <vector>
 
@@ -55,7 +56,8 @@ namespace SDL_Graph{
         SDL_Color background_color;//backgroung color
         uint8_t flags;
         int width , height;
-
+        bool showTextLabels;
+        TTF_Font* font;
       public:
          //defining the constructor
          Graph(std::vector<Dataset> data, int w, int h);
@@ -76,19 +78,34 @@ namespace SDL_Graph{
         void setBackgroundColor(SDL_Color color);
 
         SDL_Color getBackgroundColor();
+        
+        void setDatasetArray(std::vector<Dataset> data);
+        std::vector<Dataset> getDatasetArray();
+        
+        void addDataset(Dataset data);
+        void removeDataset(int index);
+        void clearDatasetArray();
 
+        int getWidth();
+        int getHeight();  
+        
+        void setHeight(int h);
+        void setWidth(int w);
+
+        void setFont(TTF_Font* font);
+        TTF_Font* getFont();
 
         void setFlags(uint8_t flags);
 
         uint8_t getFlags();
 
-        int SDL_GetGraphMaxX();
+        int GetGraphMaxX();
       
-        int SDL_GetGraphMinX() ;
+        int GetGraphMinX() ;
       
-        int SDL_GetGraphMaxY() ;
+        int GetGraphMaxY() ;
       
-        int SDL_GetGraphMinY() ;
+        int GetGraphMinY() ;
     };  //end of Graph class
     
 
@@ -97,7 +114,7 @@ namespace SDL_Graph{
       
       public:
         // Constructor for LineGraph
-        LineGraph(std::vector<Dataset> data, int w, int h)
+        LineGraph(SDL_Renderer* renderer  , std::vector<Dataset> data, int w, int h)
             : Graph(data, w, h) {}
     
         // Additional methods specific to LineGraph can be added here
@@ -108,13 +125,31 @@ namespace SDL_Graph{
 
     
     class BarGraph : public Graph {
+      private:
+        SDL_Color Bar_color;
+        std::vector<SDL_Color> bar_colors_array;
+        std::string x_title;
+        std::string y_title;
+
       public:
         // Constructor for BarGraph
-        BarGraph(std::vector<Dataset> data, int w, int h)
+        BarGraph(SDL_Renderer* renderer  ,std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font )
             : Graph(data, w, h) {}
     
         // Additional methods specific to BarGraph can be added here
         void drawBarGraph(SDL_Renderer* renderer);
+
+        void setBarColor(SDL_Color color);
+        SDL_Color getBarColor();
+        void setBarColorsArray(std::vector<SDL_Color> colors);
+        std::vector<SDL_Color> getBarColorsArray();
+       
+        void setXTitle(std::string title);
+        std::string getXTitle();
+        void setYTitle(std::string title);
+        std::string getYTitle();
+
+
     };
 
 

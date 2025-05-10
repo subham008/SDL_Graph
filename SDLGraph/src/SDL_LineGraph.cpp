@@ -3,9 +3,23 @@
 #endif
 
 
-#include "SDL_Graph.cpp"
+#include "SDL_Graph.hpp"
+
+namespace SDL_Graph{
+// Constructor for BarGraph
+ LineGraph::LineGraph (SDL_Renderer* renderer ,  std::vector<Dataset> data, int w, int h)
+        : Graph(data, w, h) {
+        // Additional initialization for BarGraph (if needed)
+    }
 
 
+  void LineGraph::drawLineGraph(SDL_Renderer* renderer) {
+        // Implementation for drawing the bar graph
+        // This function can be customized based on your requirements
+    }
+
+
+  }
 
 
 

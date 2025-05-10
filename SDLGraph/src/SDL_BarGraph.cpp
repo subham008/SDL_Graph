@@ -4,7 +4,196 @@
 #endif
 
 
-#include "SDL_Graph.cpp"
+#include "SDL_Graph.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+namespace SDL_Graph{
+// Constructor for BarGraph
+ BarGraph::BarGraph (SDL_Renderer* renderer , std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font)
+        : Graph(data, w, h) {
+        if(renderer == NULL) {
+            SDL_SetError("SDL_Graph::LineGraph::LineGraph() ERROR : SDL_Renderer* -> NULL pointer passed ");
+            return;
+        }
+
+        if(data.empty()) {
+            SDL_SetError("SDL_Graph::LineGraph::LineGraph() ERROR : Dataset array is empty ");
+            return;
+        }
+
+        setDatasetArray(data); 
+        setWidth(w);
+        setHeight(h);
+        setTextColor({0, 0, 0, 255});
+        setBackgroundColor({255, 255, 255, 255});
+        setFlags(0);
+        setFont(graph_font);
+
+       setGraphTexture(SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, w, h));
+        
+       if(getGraphTexture()==NULL)
+            std::cout<<"SDL_Graph::LineGraph::LineGraph() ERROR : SDL_CreateTexture() failed : "<<SDL_GetError()<<std::endl;
+        
+        SDL_Color b = getBackgroundColor();
+        // Set the background color
+        SDL_SetRenderDrawColor(renderer , b.r , b.g , b.b , b.a);
+        SDL_SetRenderTarget(renderer , getGraphTexture());
+        SDL_RenderClear(renderer);
+        
+      // now printing x and y lines
+        SDL_SetRenderDrawColor(renderer , 0,0,0,100);
+        SDL_RenderDrawLine(renderer ,20 , 20 , 20 , -20);// rendering Y axis line
+        SDL_RenderDrawLine(renderer ,20 , getHeight()-20 ,getWidth()-20 , getHeight()-20);// rendering X axis line
+
+        int x_max=GetGraphMaxX();
+        int x_min=GetGraphMinX();
+
+        int y_max=GetGraphMaxY();
+        int y_min=GetGraphMinY();
+
+        int x_pix=(getWidth()-40)/(x_max+1);
+        int y_pix=(getHeight()-40)/y_max;
+
+        int xv_pix=x_pix/getDatasetArray().size();
+
+       SDL_Color c;
+
+      SDL_Rect r;
+      r.w=x_pix;
+      
+      Dataset* d=NULL;
+      for(int j=0 ; j<getDatasetArray().size();j++){
+         d=&getDatasetArray()[j];
+         c=getBarColor();
+        if(getBarColorsArray().empty())
+            for(int i=0;i< getBarColorsArray().size() ; i++){
+                SDL_SetRenderDrawColor(renderer ,c.r,c.g,c.b,c.a );
+                r.w=xv_pix;
+                r.h=y_pix*(d->getData()[i].second );  //i,1
+                r.y=(getHeight()-20)-r.h;
+                r.x=(d->getData()[i].first)*x_pix + (j*xv_pix);
+                r.x+=20;
+                SDL_RenderFillRect(renderer , &r);
+
+                r.y=r.y-1;
+                r.x=r.x-1;
+                r.w=r.w+1;
+
+                SDL_SetRenderDrawColor(renderer ,0,0,0,244 );
+                SDL_RenderDrawRect(renderer,&r);
+        }// end of i loop
+          else
+              for(int i=0;i<getDatasetArray().size(); i++){
+                  c=getBarColorsArray()[i];
+                  SDL_SetRenderDrawColor(renderer ,c.r,c.g,c.b,c.a );
+                  r.w=xv_pix;
+                  r.h=y_pix*(d->getData()[i].second);
+                  r.y=(getHeight()-20)-r.h;
+                  r.x=(d->getData()[i].first)*x_pix + (j*xv_pix);
+                  r.x+=20;
+                  SDL_RenderFillRect(renderer , &r);
+
+                  r.y=r.y-1;
+                  r.x=r.x-1;
+                  r.w=r.w+1;
+
+                  SDL_SetRenderDrawColor(renderer ,0,0,0,244 );
+                  SDL_RenderDrawRect(renderer,&r);
+     
+            }//end of i loop
+          }
+
+      //rendering text
+       if(getFont()==NULL)
+         return;
+       
+      SDL_Surface* sur;
+      SDL_Texture* tex;
+  
+     if( getXTitle().length() >0 ){
+       //creating and rendering x title 
+       sur=TTF_RenderUTF8_Blended(graph_font , getXTitle().c_str() , getTextColor() );
+       if(sur==NULL){
+         SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD SURFACE FROM FONT : %s",SDL_GetError());
+         return;
+         }
+
+       tex=SDL_CreateTextureFromSurface(renderer , sur);
+
+      if(tex==NULL){
+        SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD TEXTURE FROM SURFACE : %s", SDL_GetError());
+       return;
+      }
+   
+      r.x=(getWidth()-sur->w)/2;
+      r.y=getHeight()-20;
+      r.h=sur->h;
+      r.w=sur->w;
+      SDL_RenderCopy(renderer , tex , NULL,&r);
+      SDL_FreeSurface(sur);
+      bar->x_title_texture=tex;
+    }
+
+    if( bar->y_title!=NULL && strlen(bar->y_title)>0){
+       //creating and rendering x title 
+       sur=TTF_RenderUTF8_Blended(graph_font ,bar->y_title, getTextColor() );
+      if(sur==NULL){
+        SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD SURFACE FROM FONT : %s",SDL_GetError());
+        return ;
+       }
+   
+      tex=SDL_CreateTextureFromSurface(renderer , sur);
+   
+     if(tex==NULL){
+        SDL_Log("SDL_CreateBarGraph(..) : FATAL ERROR : FAILED TO LOAD TEXTURE FROM SURFACE : %s", SDL_GetError());
+       return;
+     }
+   
+     r.x=10;
+     r.y=0;
+     r.h=sur->h;
+     r.w=sur->w;
+     SDL_RenderCopy(renderer , tex , NULL,&r);
+     SDL_FreeSurface(sur);
+     bar->y_title_texture=tex;
+  }
+
+
+  SDL_SetRenderTarget(renderer , NULL);     
+
+
+} // end of constructor
+
+
+  void  BarGraph::drawBarGraph(SDL_Renderer* renderer) {
+        // Implementation for drawing the bar graph
+        // This function can be customized based on your requirements
+    }
+
+
+    // Setter for Bar color
+    void BarGraph::setBarColor(SDL_Color color) {
+        this->Bar_color = color;
+    }
+
+    // Getter for Bar color
+    SDL_Color BarGraph::getBarColor() {
+        return this->Bar_color;
+    }
+
+    // Setter for Bar colors array
+    void BarGraph::setBarColorsArray(std::vector<SDL_Color> colors) {
+        this->bar_colors_array = colors;
+    }
+
+    // Getter for Bar colors array
+    std::vector<SDL_Color> BarGraph::getBarColorsArray() {
+        return this->bar_colors_array;
+    }
+  }
+
+
 
 /**
  * creates a bar graph into a SDL_Texture
@@ -120,6 +309,7 @@ for(int j=0 ; j<bar->size;j++){
 
 
 #ifdef SDL_TTF_H_
+
 SDL_Color black={0,0,0,255};
  // code for renderig font
  if(graph_font!=NULL){
