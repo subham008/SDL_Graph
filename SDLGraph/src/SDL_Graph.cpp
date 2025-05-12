@@ -163,7 +163,7 @@ uint8_t Graph::getFlags() {
 
 
 // Get the maximum X value from the dataset array
-int Graph::SDL_GetGraphMaxX() {
+int Graph::GetGraphMaxX() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine maximum X value.");
     }
@@ -179,7 +179,7 @@ int Graph::SDL_GetGraphMaxX() {
 }
 
 // Get the minimum X value from the dataset array
-int Graph::SDL_GetGraphMinX() {
+int Graph::GetGraphMinX() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine minimum X value.");
     }
@@ -195,7 +195,7 @@ int Graph::SDL_GetGraphMinX() {
 }
 
 // Get the maximum Y value from the dataset array
-int Graph::SDL_GetGraphMaxY() {
+int Graph::GetGraphMaxY() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine maximum Y value.");
     }
@@ -211,7 +211,7 @@ int Graph::SDL_GetGraphMaxY() {
 }
 
 // Get the minimum Y value from the dataset array
-int Graph::SDL_GetGraphMinY() {
+int Graph::GetGraphMinY() {
     if (dataset_array.empty()) {
         throw std::runtime_error("Graph dataset array is empty. Cannot determine minimum Y value.");
     }

@@ -191,6 +191,7 @@ namespace SDL_Graph{
     std::vector<SDL_Color> BarGraph::getBarColorsArray() {
         return this->bar_colors_array;
     }
+    
   }
 
 

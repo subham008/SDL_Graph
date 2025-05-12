@@ -4,6 +4,8 @@
 
 
 #include "SDL_Graph.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 namespace SDL_Graph{
 // Constructor for BarGraph
