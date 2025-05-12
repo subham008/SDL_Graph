@@ -1,81 +1,63 @@
-# SDL_Graph 1.1.0
-SDL_Graph is a extension to SDL library , it is able to render bar and line graphs ,its easy to use , no need to think about architecture , as it is not compiled you just have to  add this files to your desired directory and include this files from there 
-
-HOW TO INSTALL
-this is a source file so just need to download the files
-SDL_Graph.h the SDL_Graph header file
-SDL_BarGraph.c the source to SDL_CreateBarGraph(...) function
-SDL_LineGraph.c the source to SDL_CreateLineGraph(...) function
-
-This above files are source so you should place this file in the same directory as your working directory
-
-HOW TO COMPILE 
-There is no special linker or anything to compile this , normally use SDL2 and SDL_ttf compile commands 
-
-command is : gcc tect.c -o test -lSDL2 -lSDL2_ttf
-
-*********WARNING**************
- Always include SDL_Graph.h after including SDL.h and SDL_ttf.h
- 
-For detailed information have a look at test.c file 
-
-**********HOW TO USE**************
-
-The SDL_Graph have two structs ,
-SDL_Dataset and SDL_Graph
-
-To render a graph first step is to make a SDL_Dataset by using function :
-          SDL_CraeteDataset( SDL_Dataset*  ,int (*)[2] , int  , SDL_Color , SDL_Color* )
- Paraments:
- 
- SDL_Dataset* --> pointer to the SDL_Dataset filled with datas
- int (*)[2]   --> pointer to the 2d array pointer where x and y data is stored 
- int          --> length of the data 
- SDL_Color    --> color of the graphs in SDL_Color 
- SDL_Color*   --> poiner to the SDL_Color array , pass the SDL_Color array pointer if you want to make each graph bar or line have diffrent colors or pass NULL
-
- EXAMPEL CODE :
- 
- SDL_Color red={200,35,25,200};
- int d[][2]={ {0,4}, {1,10} ,{2,4},{3,7} ,{4,6},{5,8},{6,12},{7,9} ,{8 ,5},{9,8} }; // 2d array filled with x y data
- 
-  SDL_Dataset dataset;
-  SDL_CreateDataset(&dataset[0] ,d, 10 , red, NULL);
+# SDL_Graph 1.0.0
+SDL_Graph is a extension to SDL library , it is able to render bar and line graphs ,its easy to use 
 
 
- //SDL_Dataset is now created now it is ready to create graph
+---
 
- graph is creating a SDL_Texture and rendering everything in that texture 
+⚠️ **Warning**: This project is still under development. Features may be incomplete, and the API is subject to change. Use at your own risk.
 
- After creating SDL_Dataset we have to create SDL_Graph
+---
 
- To make SDL_Graph we have to use function :
-        void SDL_CreateGraph(SDL_Graph* bar , SDL_Dataset* data ,uint32_t size, int w , int h )
+# How to Contribute
 
- Paraments:
- SDL_Graph* --> pointyer to the SDL_Graph filled with graph datas
- SDL_Dataset* -> pointer to SDL_Dataset , which is you want to render as graph
- uint32_     --> number of dataset 
- int w      -->  width of the graph
- int h      --> height of the graph
+We welcome contributions to the SDL_Graph project! Please follow these guidelines to ensure a smooth collaboration:
 
- now we have created SDL_Graph too , and Now we will create graph by using functions  SDL_CreateBarGraph() or  SDL_CreateLineGraph();
+## Contribution Guidelines
 
-for exampele we are using SDL_Bargraph  :
-EXMPLE CODE :
+1. **Fork the Repository**:
+   - Start by forking the repository to your GitHub account.
 
-SDL_Graph bar;
-   SDL_CreateGraph(&bar , dataset , 2, 300, 200); // created   SDL_Graph
-   bar.x_title="days";   // giving  x title
-   bar.y_title="rainfall";    // giving  y title
-   SDL_CreateBarGraph(renderer , &bar);   // creating Bar graph using this function
-   SDL_Rect grect={50,10,bar.w,bar.h};    //SDL_Rect , where you want to render
+2. **Create a Branch**:
+   - Create a new branch for your feature or bug fix.
+   - Use a descriptive name for your branch, such as `feature/add-line-graph` or `bugfix/fix-render-crash`.
 
- ...
- // and now in the main loop 
-      SDL_RenderGraph(renderer , &bar ,&grect);
+3. **Write Clear Code**:
+   - Follow the existing coding style and structure.
+   - Add comments where necessary to explain your code.
 
- // main loop end
+4. **Test Your Changes**:
+   - Ensure your changes do not break existing functionality.
+   - Add tests for new features or bug fixes if applicable.
+
+5. **Commit Messages**:
+   - Write clear and concise commit messages.
+   - Use the format: `type(scope): description`
+     - Example: `feat(graph): add support for custom bar colors`
+
+6. **Submit a Pull Request**:
+   - Push your branch to your forked repository.
+   - Open a pull request to the `main` branch of this repository.
+   - Provide a detailed description of your changes and why they are necessary.
+
+7. **Code Review**:
+   - Be open to feedback during the code review process.
+   - Make necessary changes as requested by the maintainers.
+
+8. **Respect the Project Scope**:
+   - Ensure your contributions align with the goals and scope of the project.
+   - If you're unsure, open an issue to discuss your idea before starting work.
+
+## Reporting Issues
+
+If you encounter a bug or have a feature request, please:
+1. Open an issue in the repository.
+2. Provide a clear and detailed description of the problem or feature.
+3. Include steps to reproduce the issue if applicable.
+
+## Code of Conduct
+
+Please be respectful and professional in all interactions. We are committed to fostering an inclusive and welcoming environment for everyone.
+
+Thank you for contributing to SDL_Graph!
 
 
- thats how you can rendr a graph
