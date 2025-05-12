@@ -22,26 +22,6 @@ std::vector<std::pair<int,int>> Dataset::getData()  {
     this->color=color;
  }
 
- // Setter for width
-void Graph::setWidth(int w) {
-    this->width = w;
-}
-
-// Getter for width
-int Graph::getWidth() {
-    return this->width;
-}
-
-// Setter for height
-void Graph::setHeight(int h) {
-    this->height = h;
-}
-
-// Getter for height
-int Graph::getHeight() {
-    return this->height;
-}
-
  SDL_Color Dataset::getColor(){
      return this->color;
  }
@@ -141,6 +121,27 @@ SDL_Color Graph::getTextColor() {
     return this->Text_color;
 }
 
+// Setter for width
+void Graph::setWidth(int w) {
+    this->width = w;
+}
+
+// Getter for width
+int Graph::getWidth() {
+    return this->width;
+}
+
+// Setter for height
+void Graph::setHeight(int h) {
+    this->height = h;
+}
+
+// Getter for height
+int Graph::getHeight() {
+    return this->height;
+}
+
+
 // Setter for background color
 void  Graph::setBackgroundColor(SDL_Color color) {
     this->background_color = color;
@@ -149,6 +150,48 @@ void  Graph::setBackgroundColor(SDL_Color color) {
 // Getter for background color
 SDL_Color Graph::getBackgroundColor() {
     return this->background_color;
+}
+
+
+// Setter for dataset array
+void Graph::setDatasetArray(std::vector<Dataset> data) {
+    this->dataset_array = data;
+}
+
+// Getter for dataset array
+
+std::vector<Dataset> Graph::getDatasetArray() {
+    return this->dataset_array;
+}
+
+
+// Add a dataset to the dataset array
+void Graph::addDataset(Dataset data) {
+    this->dataset_array.push_back(data);
+}
+
+// Remove a dataset from the dataset array by index
+void Graph::removeDataset(int index) {
+    if (index < 0 || index >= dataset_array.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+    dataset_array.erase(dataset_array.begin() + index);
+}
+
+// Clear the dataset array
+void Graph::clearDatasetArray() {
+    dataset_array.clear();
+}
+
+
+// Setter for font
+void Graph::setFont(TTF_Font* font) {
+    this->font = font;
+}
+
+// Getter for font
+TTF_Font* Graph::getFont() {
+    return this->font;
 }
 
 // Setter for flags

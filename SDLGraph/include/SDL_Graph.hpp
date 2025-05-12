@@ -106,6 +106,22 @@ namespace SDL_Graph{
         int GetGraphMaxY() ;
       
         int GetGraphMinY() ;
+        
+        int renderGraph(SDL_Renderer* renderer){
+            if(graph_texture==NULL){
+                SDL_SetError("SDL_Graph::Graph::renderGraph() ERROR : SDL_Texture* -> NULL pointer passed ");
+                return -1;
+            }
+            SDL_SetRenderTarget(renderer , graph_texture);
+            SDL_RenderCopy(renderer , graph_texture , NULL, NULL);
+
+            SDL_SetRenderTarget(renderer , NULL);
+            return 0;
+        }
+
+        ~Graph(){
+            SDL_DestroyTexture(graph_texture);
+        }
     };  //end of Graph class
     
 
@@ -128,17 +144,24 @@ namespace SDL_Graph{
       private:
         SDL_Color Bar_color;
         std::vector<SDL_Color> bar_colors_array;
+
+        //x and y axis title
         std::string x_title;
         std::string y_title;
 
+        // x and y axis title textures
+        SDL_Texture* x_title_texture;
+        SDL_Texture* y_title_texture;
+
+       
+
       public:
+
+       void updateGraph(SDL_Renderer* renderer);
         // Constructor for BarGraph
         BarGraph(SDL_Renderer* renderer  ,std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font )
             : Graph(data, w, h) {}
     
-        // Additional methods specific to BarGraph can be added here
-        void drawBarGraph(SDL_Renderer* renderer);
-
         void setBarColor(SDL_Color color);
         SDL_Color getBarColor();
         void setBarColorsArray(std::vector<SDL_Color> colors);
@@ -149,7 +172,10 @@ namespace SDL_Graph{
         void setYTitle(std::string title);
         std::string getYTitle();
 
-
+       ~BarGraph(){
+            SDL_DestroyTexture(x_title_texture);
+            SDL_DestroyTexture(y_title_texture);
+        }
     };
 
 
