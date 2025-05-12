@@ -14,38 +14,43 @@ We welcome contributions to the SDL_Graph project! Please follow these guideline
 
 ## Contribution Guidelines
 
-1. **Fork the Repository**:
-   - Start by forking the repository to your GitHub account.
+1. **Start a Discussion**:
+   - Before making any changes or adding new features, create a discussion in the repository.
+   - Clearly explain what you want to change or add and why it is necessary.
+   - Wait for feedback and approval from the maintainers before proceeding.
 
-2. **Create a Branch**:
+2. **Fork the Repository**:
+   - Once your idea is approved, fork the repository to your GitHub account.
+
+3. **Create a Branch**:
    - Create a new branch for your feature or bug fix.
    - Use a descriptive name for your branch, such as `feature/add-line-graph` or `bugfix/fix-render-crash`.
 
-3. **Write Clear Code**:
+4. **Write Clear Code**:
    - Follow the existing coding style and structure.
    - Add comments where necessary to explain your code.
 
-4. **Test Your Changes**:
+5. **Test Your Changes**:
    - Ensure your changes do not break existing functionality.
    - Add tests for new features or bug fixes if applicable.
 
-5. **Commit Messages**:
+6. **Commit Messages**:
    - Write clear and concise commit messages.
    - Use the format: `type(scope): description`
      - Example: `feat(graph): add support for custom bar colors`
 
-6. **Submit a Pull Request**:
+7. **Submit a Pull Request**:
    - Push your branch to your forked repository.
    - Open a pull request to the `main` branch of this repository.
    - Provide a detailed description of your changes and why they are necessary.
 
-7. **Code Review**:
+8. **Code Review**:
    - Be open to feedback during the code review process.
    - Make necessary changes as requested by the maintainers.
 
-8. **Respect the Project Scope**:
+9. **Respect the Project Scope**:
    - Ensure your contributions align with the goals and scope of the project.
-   - If you're unsure, open an issue to discuss your idea before starting work.
+   - If you're unsure, open an issue or discussion to clarify before starting work.
 
 ## Reporting Issues
 
@@ -59,5 +64,3 @@ If you encounter a bug or have a feature request, please:
 Please be respectful and professional in all interactions. We are committed to fostering an inclusive and welcoming environment for everyone.
 
 Thank you for contributing to SDL_Graph!
-
-
