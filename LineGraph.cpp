@@ -9,19 +9,122 @@
 
 namespace SDL_Graph{
 // Constructor for BarGraph
- LineGraph::LineGraph (SDL_Renderer* renderer ,  std::vector<Dataset> data, int w, int h)
+ LineGraph::LineGraph (SDL_Renderer* renderer ,  std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font)
         : Graph(data, w, h) {
-        // Additional initialization for BarGraph (if needed)
+          if(renderer == NULL) {
+            SDL_SetError("SDL_Graph::LineGraph::LineGraph() ERROR : SDL_Renderer* -> NULL pointer passed ");
+            return;
+        }
+
+        if(data.empty()) {
+            SDL_SetError("SDL_Graph::LineGraph::LineGraph() ERROR : Dataset array is empty ");
+            return;
+        }
+
+        setDatasetArray(data); 
+        setWidth(w);
+        setHeight(h);
+        setTextColor({0, 0, 0, 255});
+        setBackgroundColor({255, 255, 255, 255});
+        setFlags(0);
+        setFont(graph_font);
+
+        setGraphTexture(SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, w, h));
+       
+       //creating graph first time
+       updateGraph(renderer);
     }
 
 
-  void LineGraph::drawLineGraph(SDL_Renderer* renderer) {
-        // Implementation for drawing the bar graph
-        // This function can be customized based on your requirements
-    }
+  void LineGraph::setLineColor(SDL_Color color) {
+    line_color = color;
+   }
 
 
+   void LineGraph::updateGraph(SDL_Renderer* renderer ){
+      if(getGraphTexture()==NULL){
+            std::cout<<"SDL_Graph::LineGraph::LineGraph() ERROR : SDL_CreateTexture() failed : "<<SDL_GetError()<<std::endl;
+            return;
+   }
+        SDL_Color b = getBackgroundColor();
+        // Set the background color
+        SDL_SetRenderDrawColor(renderer , b.r , b.g , b.b , b.a);
+        SDL_SetRenderTarget(renderer , getGraphTexture());
+        SDL_RenderClear(renderer);
+
+
+        // now printing x and y lines
+       SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+       SDL_RenderDrawLine(renderer ,20 , 20 , 20 , getHeight()-20);// rendering Y axis line
+       SDL_RenderDrawLine(renderer ,20 , getHeight()-20 , getWidth()-20 , getHeight()-20);// rendering X axis line
+
+       int x_max=GetGraphMaxX();
+       int x_min=GetGraphMinX();
+
+       int y_max= GetGraphMaxY();
+       int y_min= GetGraphMinY();
+  
+      int x_pix=( getWidth()-40)/x_max;
+      int y_pix=(getHeight()-40)/y_max;
+
+      SDL_Color c;
+
+      Dataset* d=NULL;
+      for(int j=0; j<getDatasetArray().size() ; j++){
+        d=&getDatasetArray()[j];
+        c=getLineColor();
+        SDL_SetRenderDrawColor(renderer ,c.r,c.g,c.b,c.a );
+        int tmpx,tmpy , tmx,tmy;
+
+        for(int i=0;i<d->getData().size() ;i++){
+           tmpx=20+(d->getData()[i].first*x_pix);
+           tmpy=(d->getData()[i].second*y_pix);
+           tmpy=(getHeight()-20)-tmpy;
+
+           tmx=20+(d->getData()[i+1].first*x_pix);
+           tmy=(d->getData()[i+1].second*y_pix);
+           tmy=(getHeight()-20)-tmy;
+           SDL_RenderDrawLine(renderer , tmpx , tmpy , tmx , tmy);
+          }
+        }
+
+     SDL_Rect r;
+     SDL_Color black={0,0,0,255};
+
+
+   }
+
+  SDL_Color LineGraph::getLineColor() {
+    return line_color;
   }
+
+  void LineGraph::setLineColorsArray(std::vector<SDL_Color> colors) {
+    line_colors_array = colors;
+  }
+
+  std::vector<SDL_Color> LineGraph::getLineColorsArray() {
+    return line_colors_array;
+  }
+
+  void LineGraph::setXTitle(std::string title) {
+    x_title = title;
+  }
+
+  std::string LineGraph::getXTitle() {
+    return x_title;
+  }
+
+  void LineGraph::setYTitle(std::string title) {
+    y_title = title;
+  }
+
+  std::string LineGraph::getYTitle() {
+    return y_title;
+  }
+
+
+
+}
 
 
 

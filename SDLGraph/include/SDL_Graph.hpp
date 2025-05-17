@@ -9,7 +9,6 @@
    #define SDL_GRAPH_H_
 
 
-
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_ttf.h>
 #include <iostream>
@@ -32,7 +31,7 @@ namespace SDL_Graph{
        //define setter and getter methods for the private members
         void setData(std::vector<std::pair<int,int>> data);
 
-        std::vector<std::pair<int,int>> getData();
+        std::vector<std::pair<int,int>> getData() const;
 
         void setColor(SDL_Color color);
         SDL_Color getColor();
@@ -61,9 +60,6 @@ namespace SDL_Graph{
       public:
          //defining the constructor
          Graph(std::vector<Dataset> data, int w, int h);
-
-
-        //define setter and getter methods for the private members
 
 
         void setGraphTexture(SDL_Texture* texture);
@@ -107,13 +103,19 @@ namespace SDL_Graph{
       
         int GetGraphMinY() ;
         
-        int renderGraph(SDL_Renderer* renderer){
+        int renderGraph(SDL_Renderer* renderer , int x , int y){
             if(graph_texture==NULL){
-                SDL_SetError("SDL_Graph::Graph::renderGraph() ERROR : SDL_Texture* -> NULL pointer passed ");
+                std::cerr<<"SDL_Graph::Graph::renderGraph() ERROR : SDL_Texture* -> NULL pointer passed "<<std::endl;
                 return -1;
             }
-            SDL_SetRenderTarget(renderer , graph_texture);
-            SDL_RenderCopy(renderer , graph_texture , NULL, NULL);
+
+            SDL_Rect graph_rect;
+            graph_rect.x =x;
+            graph_rect.y = y;
+            graph_rect.w=width;
+            graph_rect.h = height;
+           // SDL_SetRenderTarget(renderer , graph_texture);
+            SDL_RenderCopy(renderer , graph_texture , NULL, &graph_rect);
 
             SDL_SetRenderTarget(renderer , NULL);
             return 0;
@@ -126,16 +128,42 @@ namespace SDL_Graph{
     
 
 
-    class LineGraph : public Graph {
+    // class LineGraph : public Graph {
+    //   private:
+    //     SDL_Color line_color;
+    //     std::vector<SDL_Color> line_colors_array;
+
+    //     //x and y axis title
+    //     std::string x_title;
+    //     std::string y_title;
+
+    //     // x and y axis title textures
+    //     SDL_Texture* x_title_texture;
+    //     SDL_Texture* y_title_texture;
+    //   public:
+
+    //    void updateGraph(SDL_Renderer* renderer);
       
-      public:
-        // Constructor for LineGraph
-        LineGraph(SDL_Renderer* renderer  , std::vector<Dataset> data, int w, int h)
-            : Graph(data, w, h) {}
-    
-        // Additional methods specific to LineGraph can be added here
-        void drawLineGraph(SDL_Renderer* renderer);
-    };
+    //     // Constructor for LineGraph
+    //     LineGraph(SDL_Renderer* renderer  , std::vector<Dataset> data, int w, int h , TTF_Font* graph_font);     
+        
+    //     void setLineColor(SDL_Color color);
+    //     SDL_Color getLineColor();
+    //     void setLineColorsArray(std::vector<SDL_Color> colors);
+    //     std::vector<SDL_Color> getLineColorsArray();
+
+    //      void setXTitle(std::string title);
+    //     std::string getXTitle();
+    //     void setYTitle(std::string title);
+    //     std::string getYTitle();
+        
+    //     // Destructor
+    //     ~LineGraph(){
+    //         SDL_DestroyTexture(x_title_texture);
+    //         SDL_DestroyTexture(y_title_texture);
+    //     }
+
+    // };
 
 
 
@@ -154,13 +182,11 @@ namespace SDL_Graph{
         SDL_Texture* y_title_texture;
 
        
-
       public:
 
        void updateGraph(SDL_Renderer* renderer);
         // Constructor for BarGraph
-        BarGraph(SDL_Renderer* renderer  ,std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font )
-            : Graph(data, w, h) {}
+        BarGraph(SDL_Renderer* renderer  ,std::vector<Dataset> data, int w, int h  , TTF_Font* graph_font );
     
         void setBarColor(SDL_Color color);
         SDL_Color getBarColor();
@@ -183,43 +209,6 @@ namespace SDL_Graph{
 }
 
 
-
-
-// int SDL_RenderGraph(SDL_Renderer* ren ,SDL_Graph* bar,SDL_Rect* r){
-
-//   if(bar==NULL){
-//     SDL_SetError("SDL_RenderGraph(... , SDL_BarGraph*) ERROR : SDL_BarGraph* -> NULL poninter passed ");
-//     return -1;
-//   }
-
-//   if(ren==NULL){
-//     SDL_SetError("SDL_RenderGraph(... , SDL_BarGraph*) ERROR : SDL_Renderer* -> NULL poninter passed ");
-//     return -1;
-//   }
-
-//   if(bar->graph_texture==NULL){
-//      SDL_SetError("SDL_RenderGraph(... , SDL_BarGraph*) ERROR : SDL_BarGraph* ->SDL_Texture*  NULL Texture passed ");
-//     return -1;
-//   }
-//     SDL_RenderCopy(ren , bar->graph_texture , NULL, r);
-//     return 0;
-// }
-
-
-// int  SDL_DestroyGraph(SDL_Graph* bar){
-//     if(bar==NULL){
-//     SDL_SetError("SDL_DestroyGraph( SDL_BarGraph*) ERROR : SDL_Graph* -> NULL poninter passed ");
-//     return -1;
-//   }
-
-//     SDL_DestroyTexture(bar->graph_texture);
-    
-//     SDL_DestroyTexture(bar->x_title_texture);
-//     SDL_DestroyTexture(bar->y_title_texture);
-
-// bar=NULL;
-//     return 0;
-// }
 
 #endif
 

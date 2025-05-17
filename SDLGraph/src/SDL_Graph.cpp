@@ -14,7 +14,7 @@ void  Dataset::setData(std::vector<std::pair<int,int>> data) {
     this->data=data;
 }
 
-std::vector<std::pair<int,int>> Dataset::getData()  {
+std::vector<std::pair<int,int>> Dataset::getData() const {
     return this->data;
  }
 
@@ -96,6 +96,9 @@ Graph::Graph(std::vector<Dataset> data, int w, int h)
     : dataset_array(data), graph_texture(nullptr), Text_color({0, 0, 0, 255}), background_color({255, 255, 255, 255}), flags(0) {
     this->width = w;
     this->height= h;
+
+        setTextColor({255, 0, 0, 255});
+        setBackgroundColor({255, 255, 255, 255});
 }
 
 // Setter for graph texture
