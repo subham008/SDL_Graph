@@ -58,20 +58,20 @@ int main(int argc, char* argv[]) {
     }
 
     // Define datasets
-    std::vector<std::pair<int, int>> data1 = {{50, 200}, {150, 300}, {250, 100}, {350, 400}, {450, 250}};
-    std::vector<std::pair<int, int>> data2 = {{50, 150}, {150, 250}, {250, 50}, {350, 350}, {450, 200}};
+    std::vector<std::pair<int, int>> data1 = {{50, 200}, {150, 300}, {200, 200}, {250, 400}, {300, 250}};
+    std::vector<std::pair<int, int>> data2 = {{50, 150}, {150, 250}, {200, 50}, {250, 350}, {300, 200}};
     SDL_Color color1 = {255, 0, 0, 255}; // Red
     SDL_Color color2 = {0, 0, 255, 255}; // Blue
 
     SDL_Graph::Dataset dataset1(data1, color1);
-    SDL_Graph::Dataset dataset2(data2, color2);
+    //SDL_Graph::Dataset dataset2(data2, color2);
 
-    std::vector<SDL_Graph::Dataset> datasets = {dataset1, dataset2};
+    std::vector<SDL_Graph::Dataset> datasets = {dataset1};
 
     // Create a BarGraph object
     SDL_Graph::BarGraph barGraph(renderer, datasets, 600, 400, font);
-    barGraph.setXTitle("X-Axis");
-    barGraph.setYTitle("Y-Axis");
+    barGraph.setXTitle("Students");
+    barGraph.setYTitle("Marks");
     barGraph.setBarColor({0, 255, 0, 255}); // Default bar color (green)
 
     // Main loop
@@ -82,11 +82,7 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT) {
                 quit = 1;
             } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
-               // Handle window resizing
-                // int newWidth, newHeight;
-                // SDL_GetWindowSize(window, &newWidth, &newHeight);
-                // barGraph.setWidth(newWidth);
-                // barGraph.setHeight(newHeight);
+               barGraph.updateGraph(renderer);
             }
         }
 

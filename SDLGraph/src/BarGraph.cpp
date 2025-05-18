@@ -61,7 +61,7 @@ void BarGraph::updateGraph(SDL_Renderer* renderer) {
     // Get data range
     int x_min = GetGraphMinX();
     int x_max = GetGraphMaxX();
-    int y_min = GetGraphMinY();
+    int y_min = 0;
     int y_max = GetGraphMaxY();
     if (x_max == x_min) x_max++;
     if (y_max == y_min) y_max++;
@@ -115,28 +115,40 @@ for (size_t group = 0; group < x_positions.size(); ++group) {
 }
 
     // Draw X and Y axis labels
-    if (getFont()) {
-        SDL_Log("Drawing Text");
+if (getFont()) {
+    SDL_Color textColor = getTextColor();
+    SDL_Surface* xLabelSurface = TTF_RenderUTF8_Blended(getFont(), getXTitle().c_str(), textColor);
+    SDL_Surface* yLabelSurface = TTF_RenderUTF8_Blended(getFont(), getYTitle().c_str(), textColor);
 
-        SDL_Color textColor = getTextColor();
-        SDL_Surface* xLabelSurface = TTF_RenderUTF8_Blended(getFont(), getXTitle().c_str(), textColor);
-        SDL_Surface* yLabelSurface = TTF_RenderUTF8_Blended(getFont(), getYTitle().c_str(), textColor);
-
-        if (xLabelSurface) {
-            SDL_Texture* xLabelTexture = SDL_CreateTextureFromSurface(renderer, xLabelSurface);
-            SDL_Rect xLabelRect = { (w - xLabelSurface->w) / 2, h - margin + 10, xLabelSurface->w, xLabelSurface->h };
-            SDL_RenderCopy(renderer, xLabelTexture, NULL, &xLabelRect);
-            SDL_FreeSurface(xLabelSurface);
-            SDL_DestroyTexture(xLabelTexture);
-        }
-        if (yLabelSurface) {
-            SDL_Texture* yLabelTexture = SDL_CreateTextureFromSurface(renderer, yLabelSurface);
-            SDL_Rect yLabelRect = { 5, (h - yLabelSurface->h) / 2, yLabelSurface->w, yLabelSurface->h };
-            SDL_RenderCopy(renderer, yLabelTexture, NULL, &yLabelRect);
-            SDL_FreeSurface(yLabelSurface);
-            SDL_DestroyTexture(yLabelTexture);
-        }
+    // X-axis label: bottom center
+    if (xLabelSurface) {
+        SDL_Texture* xLabelTexture = SDL_CreateTextureFromSurface(renderer, xLabelSurface);
+        SDL_Rect xLabelRect = {
+            (w - xLabelSurface->w) / 2,
+            h - margin + 10,
+            xLabelSurface->w,
+            xLabelSurface->h
+        };
+        SDL_RenderCopy(renderer, xLabelTexture, NULL, &xLabelRect);
+        SDL_FreeSurface(xLabelSurface);
+        SDL_DestroyTexture(xLabelTexture);
     }
+
+    // Y-axis label: left center, vertical orientation
+    if (yLabelSurface) {
+        SDL_Texture* yLabelTexture = SDL_CreateTextureFromSurface(renderer, yLabelSurface);
+        SDL_Rect yLabelRect = {
+            margin/4, // a little right from the left edge
+            (h + yLabelSurface->w) / 2, // center vertically, account for rotated width
+            yLabelSurface->h, // width and height are swapped for rotation
+            yLabelSurface->w
+        };
+        // Rotate 90 degrees counterclockwise (SDL_FLIP_NONE)
+        SDL_RenderCopyEx(renderer, yLabelTexture, NULL, &yLabelRect, -90.0, NULL, SDL_FLIP_NONE);
+        SDL_FreeSurface(yLabelSurface);
+        SDL_DestroyTexture(yLabelTexture);
+    }
+}
 
     SDL_SetRenderTarget(renderer, NULL);
 }
