@@ -37,6 +37,7 @@ namespace SDL_Graph{
 } // end of constructor
 
 void BarGraph::updateGraph(SDL_Renderer* renderer) {
+    
     if (!getGraphTexture()) {
         std::cerr << "BarGraph::updateGraph() ERROR: Graph texture is NULL." << std::endl;
         return;
@@ -83,34 +84,40 @@ void BarGraph::updateGraph(SDL_Renderer* renderer) {
     if (bar_width < 2) bar_width = 2;
 
     // Draw bars
-    for (size_t group = 0; group < x_positions.size(); ++group) {
-        int x_val = x_positions[group];
-        for (int d = 0; d < num_datasets; ++d) {
-            const auto& dataset = datasets[d];
-            // Find if this dataset has a point at x_val
-            auto it = std::find_if(dataset.getData().begin(), dataset.getData().end(),
-                                   [x_val](const std::pair<int, int>& p) { return p.first == x_val; });
-            if (it != dataset.getData().end()) {
-                int y_val = it->second;
-                SDL_Color bar_color = getBarColor();
-                if (!getBarColorsArray().empty() && d < getBarColorsArray().size())
-                    bar_color = getBarColorsArray()[d];
-                SDL_SetRenderDrawColor(renderer, bar_color.r, bar_color.g, bar_color.b, bar_color.a);
-
-                int x = margin + int(group * group_width + d * bar_width);
-                int y = h - margin - int((y_val - y_min) * (double(h - 2 * margin) / (y_max - y_min)));
-                SDL_Rect bar_rect = { x, y, int(bar_width) - 1, h - margin - y };
-                SDL_RenderFillRect(renderer, &bar_rect);
-
-                // Draw bar outline
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                SDL_RenderDrawRect(renderer, &bar_rect);
+for (size_t group = 0; group < x_positions.size(); ++group) {
+    int x_val = x_positions[group];
+    for (int d = 0; d < num_datasets; ++d) {
+         auto& dataset = datasets[d];
+        // Find if this dataset has a point at x_val
+        auto it = std::find_if(dataset.getData().begin(), dataset.getData().end(),
+                               [x_val](const std::pair<int, int>& p) { return p.first == x_val; });
+        if (it != dataset.getData().end()) {
+            int y_val = it->second;
+            SDL_Color bar_color;
+            // Priority: bar_colors_array > dataset color > default bar color
+            if (!getBarColorsArray().empty() && d < getBarColorsArray().size()) {
+                bar_color = getBarColorsArray()[d];
+            } else {
+                bar_color = dataset.getColor();
             }
+            SDL_SetRenderDrawColor(renderer, bar_color.r, bar_color.g, bar_color.b, bar_color.a);
+
+            int x = margin + int(group * group_width + d * bar_width);
+            int y = h - margin - int((y_val - y_min) * (double(h - 2 * margin) / (y_max - y_min)));
+            SDL_Rect bar_rect = { x, y, int(bar_width) - 1, h - margin - y };
+            SDL_RenderFillRect(renderer, &bar_rect);
+
+            // Draw bar outline
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &bar_rect);
         }
     }
+}
 
     // Draw X and Y axis labels
     if (getFont()) {
+        SDL_Log("Drawing Text");
+
         SDL_Color textColor = getTextColor();
         SDL_Surface* xLabelSurface = TTF_RenderUTF8_Blended(getFont(), getXTitle().c_str(), textColor);
         SDL_Surface* yLabelSurface = TTF_RenderUTF8_Blended(getFont(), getYTitle().c_str(), textColor);
